@@ -14,5 +14,4 @@ switch ($opponentWeapon) {
         break;
 }
 
-echo($opponentWeapon).chr(13);
 echo($indyWeapon);
