@@ -1,4 +1,4 @@
-**mysql> select * from wizard where birthday between '1975-01-01' AND '1985-01-01';**
+**mysql> select * from wizard where birthday between '1975-01-01' AND '1985-12-31';**
 +----+-----------+----------+------------+-------------+---------------------------------------+-----------+
 | id | firstname | lastname | birthday   | birth_place | biography                             | is_muggle |
 +----+-----------+----------+------------+-------------+---------------------------------------+-----------+
