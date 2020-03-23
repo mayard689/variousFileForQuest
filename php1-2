@@ -1,0 +1,104 @@
+<?php /* client side */ ?>
+
+<?php ?>
+
+<form  action="thank.php"  method="post">
+    <div>
+      <label  for="nom">Nom :</label>
+      <input  type="text"  id="nom"  name="user_name" required>
+    </div>
+    <div>
+        <label  for="prenom">Prénom :</label>
+        <input  type="text"  id="prenom"  name="user_firstname" required>
+    </div>
+    <div>
+      <label  for="courriel">Courriel :</label>
+        <input  type="email"  id="courriel"  name="user_email" required>
+    </div>
+    <div>
+        <label  for="numTelephone">Numéro de téléphone :</label>
+        <input  type="tel"  id="tel"  name="user_tel" required>
+    </div>
+    <div>
+        <label  for="theme">Thème :</label>
+        <select name="user_theme" id="theme" required>
+            <option value="Le seigneur des anneaux">Le seigneur des anneaux</option>
+            <option value="Star wars">Star wars</option>
+            <option value="Harry Potter">Harry Potter</option>
+            <option value="Indiana Jones">Indiana Jones</option>
+            <option value="Watchmen">Watchmen</option>
+        </select>
+    </div>
+    <div>
+      <label  for="message">Message :</label>
+      <textarea  id="message"  name="user_message" required></textarea>
+    </div>
+    <div  class="button">
+      <button  type="submit">Envoyer votre message</button>
+    </div>
+</form>
+
+
+<?php /* server side */ ?>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+    <head>
+        <title>Test du formulaire</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+
+        <header ></header>
+
+        <main>
+            <?php if (checkFormData()) {?>
+                Merci <?=$_POST["user_firstname"]." ".$_POST["user_name"]?> de nous avoir contacté à propos de “<?=$_POST["user_theme"]?>”.
+                Un de nos conseiller vous contactera soit à l’adresse <?=$_POST["user_email"]?> ou par téléphone au <?=$_POST["user_tel"]?> dans les plus brefs délais pour traiter votre demande :
+                <?=htmlspecialchars($_POST["user_message"])?>
+            <?php } else {?>
+                Il manque des informations ou que le format des données n’est pas bon.
+            <?php } ?>
+
+        </main>
+
+        <footer></footer>
+    </body>
+</html>
+
+<?php
+
+function checkFormData()
+{
+    if (!isset($_POST["user_email"]) || !isset($_POST["user_firstname"]) || !isset($_POST["user_name"]) || !isset($_POST["user_theme"]) || !isset($_POST["user_tel"]) || !isset($_POST["user_message"])) {
+        return false;
+    }
+
+    if (""==$_POST["user_email"] || ""==$_POST["user_firstname"] || ""==$_POST["user_name"] || ""==$_POST["user_theme"] || ""==$_POST["user_tel"] || ""==$_POST["user_message"]) {
+        return false;
+    }
+
+    if (!filter_var($_POST["user_email"], FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+
+    if (!preg_match("/^[a-zA-Z0-9 ]*$/",$_POST["user_name"].$_POST["user_firstname"])) {
+        return false;
+    }
+
+    $themeList=["Le seigneur des anneaux","Star wars","Harry Potter","Indiana Jones","Watchmen"];
+    if (!in_array( $_POST["user_theme"],$themeList)) {
+        return false;
+    }
+
+    if (!preg_match("/^[0-9\-\. ]*$/",$_POST["user_tel"])) {
+        return false;
+    }
+
+    return true;
+}
+
+?>
+
