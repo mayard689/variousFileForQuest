@@ -1,0 +1,15 @@
+public class Java3 {
+
+	public static void main(String[] args) {
+		String movieName="Indiana Jones and the Last Crusade";
+		boolean movieSeen=true;
+		int movieReleaseYear=1989;
+		double movieNote=8.2;
+
+		System.out.println(movieName);
+		System.out.println(movieSeen);
+		System.out.println(movieReleaseYear);
+		System.out.println(movieNote);
+	}
+
+}
