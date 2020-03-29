@@ -1,0 +1,62 @@
+<?php
+
+
+require_once '../src/connec.php';
+$pdo = new \PDO(DSN, USER, PASS);
+
+if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
+    if(!empty(trim($_POST['firstname'])) && !empty(trim($_POST['lastname']))){
+        if ((strlen($_POST['firstname'])<45) && (strlen($_POST['lastname'])<45)) {
+
+            $query ="SELECT * FROM friend WHERE firstname=:firstname AND lastname=:lastname";
+            $statement = $pdo->prepare($query);
+            $statement->bindValue(':lastname', $_POST['lastname'], \PDO::PARAM_STR);
+            $statement->bindValue(':firstname', $_POST['firstname'], \PDO::PARAM_STR);
+            $statement->execute();
+
+            if ($statement->rowCount()==0) {
+                $query ="INSERT INTO friend (firstname, lastname) VALUES (:firstname, :lastname)";
+                $statement = $pdo->prepare($query);
+                $statement->bindValue(':lastname', $_POST['lastname'], \PDO::PARAM_STR);
+                $statement->bindValue(':firstname', $_POST['firstname'], \PDO::PARAM_STR);
+                $statement->execute();
+            }
+
+
+        }
+        header('Location: http://localhost:8001/index.php',10);
+    }
+}
+
+
+
+
+$query = "SELECT * FROM friend";
+$statement = $pdo->query($query);
+$friends = $statement->fetchAll();
+
+//var_dump($friends);
+
+?>
+
+<ul>
+
+
+<?php foreach ($friends as $friend) { ?>
+    <li>
+        <?=$friend['firstname']." ".$friend['lastname']?>
+    </li>
+<?php } ?>
+
+</ul>
+
+
+<form action="index.php" method="post">
+    <label for="firstname">Prénom</label>
+    <input type="text" id="firstname" name="firstname" placeholder="chandler">
+    <label for="lastname">Nom</label>
+    <input type="text" id="lastname" name="lastname" placeholder="bing">
+    <input type="submit" name="r" value="envoyer">
+</form>
+
+<?php
